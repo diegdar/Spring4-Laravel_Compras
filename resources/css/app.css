@@ -1,0 +1,100 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.textValidation {
+    color: red;
+}
+
+/* Posicionamiento fijo barra navegacion*/
+nav {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+/* Vista Movil-------------------- */
+@media (max-width: 975px) {
+    /* barra navegacion */
+    nav {
+        flex-direction: column;
+    }
+    /* tabla inserccion productos en compra */
+    table {
+        display: block;
+    }
+    .tableMobile tr {
+        /*afecta a todas la filas menos a la ultima  */
+        border-top: 1px dashed black;
+    }
+    .tableMobile tr > :nth-child(2) {
+        /*Solo afecta al segundo hijo de tr */
+        display: flex;
+        align-items: center;
+    }
+    .headMobile {
+        /*Afecta a los encabezados */
+        font-size: 1.2rem;
+        color: blue;
+        font-weight: bold;
+        margin-right: 5px;
+    }
+    .tableDesktop {
+        display: none;
+    }
+    tr {
+        display: flex;
+        flex-direction: column;
+    }
+    td {
+        padding: 0 4px;
+    }
+}
+
+/* Vista Desktop ------------------------*/
+@media (min-width: 977px) {
+    .tableMobile {
+        display: none;
+    }
+    .rowsDesktop {
+        border-bottom: 1px dashed black;
+    }
+    .DesktopHead {
+      position: sticky;
+      top: 80;
+      background-color: #7a8da5; /* Color de fondo para resaltar la fila fija */
+      color: white;
+      font-size: 1.2rem;
+    }
+      .DesktopHead th{
+        padding: 8px; 
+      }
+}
+
+/* Centrar los enlaces */
+.container {
+    width: 100%;
+    max-width: 960px;
+}
+/* Boton flotante para subir a la parte de arriba de la pantalla */
+#caja-flotante {
+    position: fixed;
+    top: 50%;
+    left: 10px;
+    transform: translateY(-50%);
+    z-index: 100;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+#caja-flotante:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+#caja-flotante a {
+    color: white;
+    text-decoration: none;
+}
