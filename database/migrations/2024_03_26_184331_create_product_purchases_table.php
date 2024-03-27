@@ -25,7 +25,7 @@ return new class extends Migration
                 ->constrained('purchases')
                 ->cascadeOnUpdate();
 
-            $table->unique(['product_id', 'purchase_id']);//evita entradas duplicadas para el mismo producto dentro de una compra
+            $table->unique(['product_id', 'purchase_id']);//evita entradas duplicadas para el mismo producto dentro de una misma compra
             
             // Al indexar el rendimiento es más rápido al realizar consultas
             $table->index('product_id');
