@@ -87,7 +87,7 @@
                 </form>
             </tr>
             <tr>
-                <td class="text-6xl text-center text-red-500 " colspan="6">Lista de Productos Creados:</td>
+                <td class="text-6xl text-center text-red-500" colspan="6">Lista de Productos Creados:</td>
                 <td></td>
                 <td></td>
                 <td></td>

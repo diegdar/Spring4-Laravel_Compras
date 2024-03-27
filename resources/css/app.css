@@ -62,7 +62,7 @@ nav {
     .DesktopHead {
         /* hace fijo la cabecera */
         /* position: sticky;
-        top: 80; */ 
+        top: 180;  */
       background-color: #7a8da5; /* Color de fondo para resaltar la fila fija */
       color: white;
       font-size: 1.2rem;
