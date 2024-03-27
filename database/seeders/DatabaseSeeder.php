@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
 
         Product ::factory(50)->create(); 
         Purchase ::factory(15)->create();        
+        ProductPurchase ::factory(30)->create();        
 
     }
 }
