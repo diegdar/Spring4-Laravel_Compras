@@ -22,17 +22,8 @@ class ProductPurchaseFactory extends Factory
         $quantity = $this->faker->randomNumber(1, 10);
         $unitPrice = $this->faker->randomFloat(2, 0.1, 30);
             
-        $existingPairs = ProductPurchase::pluck('purchase_id', 'product_id')->toArray();
-
-        $i = 0;
-        do {//evita entradas duplicadas para el mismo producto dentro de una misma compra 
-            $productId = Product::inRandomOrder()->first()->id;
-            $purchaseId = Purchase::inRandomOrder()->first()->id;            
-            $i++;
-        } while (!empty($existingPairs) &&
-            $existingPairs[$i]['product_id'] === $productId &&
-            $existingPairs[$i]['purchase_id'] === $purchaseId
-        );
+        $productId = Product::inRandomOrder()->first()->id;
+        $purchaseId = Purchase::inRandomOrder()->first()->id;            
 
         return [
             'quantity' => $quantity,
