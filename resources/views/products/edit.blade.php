@@ -42,12 +42,16 @@
                     </label>
                 </section>
                 <section class="text-center sm:text-left">
-                    <input type="text" name="measurement_unit" class="h-9 w-27"
-                        value="{{ old('measurement_unit', $product->measurement_unit) }}"
-                        style="text-align: center">{{-- note 5 --}}
+                    <select name="measurement_unit" id="measurement_unit" class='px-4 py-2 border border-blue-200 rounded'>
+                        <option value="{{ old('measurement_unit', $product->measurement_unit) }}">{{ $product->measurement_unit }}</option>
+                        <option value="Kilogramo">Kilogramo</option>
+                        <option value="Gramo">Gramo</option>
+                        <option value="Litro">Litro</option>
+                        <option value="Unidad">Unidad</option>
+                    </select>
                 </section>
                 <section class="flex  sm:col-start-2  justify-center md:justify-start">
-                    @error('measurement_unit'){{-- note4 --}}
+                    @error('measurement_unit'){{-- note 2 --}}
                         <span class="textValidation">*{{ $message }}</span>
                     @enderror
                 </section>
@@ -73,6 +77,7 @@
                     @enderror
                 </section>
             </div>
+
             <button type="submit" class='bg-blue-600 text-white px-7 py-2 rounded hover:bg-blue-300 my-3'>Actualizar
                 producto</button>
         </form>
