@@ -66,6 +66,7 @@ nav {
       background-color: #7a8da5; /* Color de fondo para resaltar la fila fija */
       color: white;
       font-size: 1.2rem;
+      padding: 10px 5px
     }
       .DesktopHead th{
         padding: 8px; 
