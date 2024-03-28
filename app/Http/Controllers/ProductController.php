@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\validationProduct;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
+
 /*
 🗒️NOTES:
 1: compact('productos'): es el array que recogemos en la variable $productos
@@ -61,7 +63,7 @@ class ProductController extends Controller
         $product->update($request->all()); //note 2
 
         $products = Product::orderBy('id', 'desc')->paginate(); //note 1
-        return view('products.index', compact('products'));//note 2
+        return Redirect::route('products.index')->with('products', $products);
 
     }
 
