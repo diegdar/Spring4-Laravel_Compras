@@ -28,7 +28,7 @@ class validationProduct extends FormRequest
     public function rules(): array
     {
         return [//nota 2
-            'description'=>'required|regex:/^[a-zA-Zñáéíóú]+$/|min:4',
+            'description'=>'required|string|min:4',
             'measurement_unit'=>'required|string|in:Kilogramo,Gramo,Litro,Unidad',
             'category'=>'required|string|in:Alimentacion,Limpieza,Higiene personal,Hogar',
         ];

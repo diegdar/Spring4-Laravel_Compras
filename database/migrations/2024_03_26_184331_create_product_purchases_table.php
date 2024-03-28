@@ -18,13 +18,15 @@ return new class extends Migration
             $table->decimal('import');
 
             $table->foreignId('product_id')
-                ->constrained('products')
-                ->cascadeOnUpdate();
+                ->constrained('products');
+                // ->cascadeOnUpdate();
 
             $table->foreignId('purchase_id')
-                ->constrained('purchases')
-                ->cascadeOnUpdate();
+                ->constrained('purchases');
+                // ->cascadeOnUpdate();
             
+            $table->timestamps();
+
             // Al indexar el rendimiento es más rápido al realizar consultas
             $table->index('product_id');
             $table->index('purchase_id');            
