@@ -19,7 +19,7 @@
         <a href="#" onclick="scrollToTop()">Ir Arriba</a>
     </div>
 
-    <form action="" class="text-center my-5" method="GET">
+    <form action="" class="text-left ml-20 my-5 md:ml-40 md:my-5" method="GET">
         <div class="input-group mb-3">
             <button class="bg-green-600 text-white px-7 py-2 rounded hover:bg-blue-300" type="submit"
                 id="button-addon2">Buscar</button>
@@ -58,7 +58,7 @@
                     </td>
                 </form>
             </tr>
-            </form>
+        </form>
             <tr>
                 <td class="text-6xl text-center text-red-500" colspan="4">Compras hechas:</td>
                 <td></td>
