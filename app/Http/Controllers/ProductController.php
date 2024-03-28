@@ -23,11 +23,14 @@ class ProductController extends Controller
 {
     // Muestra la lista de productos
     public function index(){
-
-        $products = Product::orderBy('id', 'desc')->paginate(); //note 1
-        return view('products.index', compact('products'));//note 2
-
-        // return $products;
+        $products = Product::query()
+            ->orderBy('id', 'desc')
+            ->when(request('search'), function($query, $search){
+                return $query->where('description', 'like', '%'. $search . '%');
+            })
+            ->paginate(10);
+        
+        return view('products.index', compact('products'));
     }
 
     // Crea un nuevo producto en la BD y muestra la lisa de productos 

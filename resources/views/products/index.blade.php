@@ -14,10 +14,10 @@
         </div>
     
         {{-- Tabla vista Desktop -------------------------- --}}
-        <form action="" class="text-center my-5">
+        <form action="" class="text-center my-5" method="GET">
             <div class="input-group mb-3">
                 <button class="bg-green-600 text-white px-7 py-2 rounded hover:bg-blue-300" type="submit" id="button-addon2">Buscar</button>
-                <input type="text" class="form-control h-9 w-80" placeholder="Buscar">
+                <input type="text" class="form-control h-9 w-80 p-2" placeholder="Buscar" name='search'>
               </div>
         </form>
         <div class="tableDesktop my-5">
