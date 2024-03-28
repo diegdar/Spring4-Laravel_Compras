@@ -14,21 +14,22 @@
         use Carbon\Carbon;
         use App\Models\ProductPurchase;
     @endphp
-{{-- Boton subir a la parte de arriba del navegador --}}
-<div id="caja-flotante">
-    <a href="#" onclick="scrollToTop()">Ir Arriba</a>
-  </div>
+    {{-- Boton subir a la parte de arriba del navegador --}}
+    <div id="caja-flotante">
+        <a href="#" onclick="scrollToTop()">Ir Arriba</a>
+    </div>
+
+    <form action="" class="text-center my-5" method="GET">
+        <div class="input-group mb-3">
+            <button class="bg-green-600 text-white px-7 py-2 rounded hover:bg-blue-300" type="submit"
+                id="button-addon2">Buscar</button>
+            <input type="text" class="form-control h-9 w-80 p-2" placeholder="Escribir texto a buscar" name='search'>
+        </div>
+    </form>
 
     {{-- Tabla vista Desktop -------------------------- --}}
     <div class="tableDesktop">
         <table class="w-full flex items-center justify-center flex-grow-0">
-            {{-- Table header rows --}}
-            <tr class="DesktopHead">
-                <th class="w-48">Nº Compra</th>
-                <th class="w-48">Fecha Compra</th>
-                <th class="w-48">Supermercado</th>
-                <th class="w-48">Importe Total</th>
-            </tr>
             <tr>
                 {{-- Data insertion Purchase rows --}}
                 <form action="{{ route('purchases.store') }}" method="POST">
@@ -59,13 +60,21 @@
             </tr>
             </form>
             <tr>
-                <td class="text-6xl text-center text-red-500 " colspan="6">Compras hechas:</td>
+                <td class="text-6xl text-center text-red-500" colspan="4">Compras hechas:</td>
                 <td></td>
                 <td></td>
                 <td></td>
                 <td></td>
                 <td></td>
             </tr>
+            {{-- Table header rows --}}
+            <tr class="DesktopHead">
+                <th class="w-48">Nº Compra</th>
+                <th class="w-48">Fecha Compra</th>
+                <th class="w-48">Supermercado</th>
+                <th class="w-48">Importe Total</th>
+            </tr>
+
             {{-- Lista compras ya creadas --}}
             @foreach ($purchases as $purchase)
                 @php
@@ -117,7 +126,8 @@
                             Nº:</label>
                         <input type="date" class="h-9" name="purchase_date" style="text-align: center;">
                         <div class="col-span-2 text-right">
-                            @error('purchase_date'){{-- note 2 --}}
+                            @error('purchase_date')
+                                {{-- note 2 --}}
                                 <span class="textValidation">*{{ $message }}</span>
                             @enderror
                         </div>
@@ -127,7 +137,8 @@
                             class="text-right mr-3 text-xl text-blue-600 font-bold">Supermercado:</label>
                         <input type="text" class="h-9" name="supermarket" style="text-align: center;">
                         <div class="col-span-2 text-right">
-                            @error('supermarket'){{-- note 2 --}}
+                            @error('supermarket')
+                                {{-- note 2 --}}
                                 <span class="textValidation">*{{ $message }}</span>
                             @enderror
                         </div>
@@ -141,7 +152,7 @@
             </tr>
             </form>
             {{-- Lista compras ya creadas --}}
-                <h1 class="text-6xl text-center text-red-500 my-4 " colspan="6">Compras hechas:</h1>
+            <h1 class="text-6xl text-center text-red-500 my-4 " colspan="6">Compras hechas:</h1>
             @foreach ($purchases as $purchase)
                 @php
                     $totalImport = ProductPurchase::where('purchase_id', $purchase->id)->sum('import'); //nota 4

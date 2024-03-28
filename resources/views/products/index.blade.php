@@ -82,6 +82,14 @@
                         </td>
                     </form>
                 </tr>
+                <tr>
+                    <td class="text-6xl text-center text-red-500" colspan="4">Lista de Productos Creados:</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
                 {{-- Table header rows --}}
                 <tr class="DesktopHead">
                     <th>Ref. Producto</th>
@@ -89,14 +97,7 @@
                     <th>Unidad de medida</th>
                     <th>Categoria</th>
                 </tr>
-                <tr>
-                    <td class="text-6xl text-center text-red-500" colspan="6">Lista de Productos Creados:</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
+
                 {{-- Lista de productos ya creados --}}
                 @foreach ($products as $product)
                     <tr class="rowsDesktop">
