@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->timestamp('purchase_date');
             $table->string('supermarket', 50);
+            $table->timestamps();
         });
     }
 
