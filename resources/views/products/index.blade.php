@@ -14,15 +14,15 @@
     </div>
 
     {{-- Tabla vista Desktop -------------------------- --}}
-    <div class="tableDesktop">
+    <div class="tableDesktop my-5">
         <table class="flex items-center justify-center">
             {{-- Table header rows --}}
-            <tr class="DesktopHead">
+            {{-- <tr class="DesktopHead">
                 <th>Ref. Producto</th>
                 <th>Descripcion Producto</th>
                 <th>Unidad de medida</th>
                 <th>Categoria</th>
-            </tr>
+            </tr> --}}
             <tr>
                 {{-- Data insertion rows --}}
                 <form action="{{ route('products.store') }}" method="POST">
@@ -45,7 +45,7 @@
                         <div class='px-4 py-2 border border-blue-200 rounded flex flex-col'>
                             <select name="measurement_unit" id="measurement_unit"
                                 class='px-4 py-2 border border-blue-200 rounded'>
-                                <option value="--">--Escoje un valor--</option>
+                                <option value="--">--Escojer medida--</option>
                                 <option value="Kilogramo" {{ old('measurement_unit') === 'Kilogramo' ? 'selected' : '' }}>
                                     Kilogramo
                                 </option>
@@ -66,7 +66,7 @@
                     <td>
                         <div class='px-4 py-2 border border-blue-200 rounded flex flex-col'>
                             <select name="category" id="category" class='px-4 py-2 border border-blue-200 rounded'>
-                                <option value="--">--Escoje un valor--</option>
+                                <option value="--">--Escojer categoria--</option>
                                 <option value="Alimentacion" {{ old('category') === 'Alimentacion' ? 'selected' : '' }}>
                                     Alimentacion
                                 </option>
@@ -86,6 +86,13 @@
                     </td>
                 </form>
             </tr>
+            <tr class="DesktopHead">
+                <th>Ref. Producto</th>
+                <th>Descripcion Producto</th>
+                <th>Unidad de medida</th>
+                <th>Categoria</th>
+            </tr>
+
             <tr>
                 <td class="text-6xl text-center text-red-500" colspan="6">Lista de Productos Creados:</td>
                 <td></td>
