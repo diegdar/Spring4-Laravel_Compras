@@ -8,99 +8,93 @@ use App\Models\Product;
 use App\Models\ProductPurchase;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-/*
-🗒️NOTES:
-1: compact('compras'): es el array que recogemos en la variable $compras
-2: Asignación masiva para insertar/actualizar registros: Crea una instancia de la clase Compra y pasará los valores recibidos en el formulario a los campos 'descripción', 'precio_unitario' y 'categoría' y también guardará estos registros en la base de datos internamente con el método save() por lo que es mejor que pasar los datos uno por uno manualmente.
-      ⚠️para que funcione debes configurar un atributo con el nombre $fillable o $guarded en la Clase de Compra.
-3: recogemos la Compra seleccionada para editar.
-      pasa a la vista los campos de la Compra seleccionada.
-
-4: Una vez realizada la acción del método, redirigimos al usuario a la lista de registros.
-5: Ordene todos los productos alfabéticamente por descripción.
-6: Necesitamos también que todos los productos sin clasificar por descripción coincidan con el 'id_product' y la posición en la matriz $products
-
-*/
 
 class PurchaseController extends Controller
 {
+  // **Muestra la lista de compras**
+  public function index()
+  {
+    $purchases = Purchase::orderBy('id', 'desc')->paginate();
 
-    // Show the purchases list
-    public function index()
-    {
+    $productsPurchases = $this->getSortedPurchasesById();
 
-        $purchases = Purchase::orderBy('id', 'desc')->paginate(); //note 1
-        // return $purchases;
+    return view('purchases.index', compact('purchases', 'productsPurchases'));
+  }
 
-        $productsPurchases = ProductPurchase::orderBy('id', 'desc')->get(); // Obtiene las compras ordenadas por id mostrando la mas reciente primero
+  // **Crea una nueva compra en la BD y muestra la lista de compras**
+  public function store(validationPurchase $request)
+  {
+    // Crea una nueva compra en la BD con los datos del formulario
+    $createdPurchase = Purchase::create($request->all());
 
-        return view('purchases.index', compact('purchases', 'productsPurchases')); //note 2
+    $sortedProducts = $this->getSortedProducts();
+    $products = $this->getAllProducts();
 
-    }
+    return view('productPurchases.create', compact('products', 'sortedProducts', 'createdPurchase'));
+  }
 
-    // crea una nueva Compra en la BD y muestra la lista de Compras
-    public function store(validationPurchase $request)
-    {
-        $createdPurchase = Purchase::create($request->all());
-        // var_dump($createdPurchase);
+  // **Elimina una compra en la BD y muestra la lista de compras**
+  public function destroy(Purchase $purchase)
+  {    
+    $purchase->delete();// Elimina la compra de la BD
 
-        $sortedProducts = Product::orderBy('description')->get(); //note 5
-        // return $sortedProducts;
-        $products = Product::all(); //note 6
+    // Redirige a la ruta 'purchases.index'
+    return redirect()->route('purchases.index');
+  }
 
-        return view('productPurchases.create', compact('products', 'sortedProducts', 'createdPurchase')); //note 2
+  // **Muestra la vista de actualizacion de la compra seleccionada**
+  public function edit(Purchase $purchase)
+  {
+    return view('purchases.edit', compact('purchase'));
+  }
 
-    }
+  // **Actualiza la compra que se selecciono**
+  public function update(validationPurchase $request, Purchase $purchase)
+  {
+    // Actualiza la compra con los datos del formulario
+    $purchase->update($request->all());
 
-    // Elimina una Compra en la BD y muestra la lista de Compras
-    public function destroy(Purchase $purchase)
-    {
+    $sortedProducts = $this->getSortedProducts();
 
-        $purchase->delete();
+    $purchase_id = $purchase->id;
+    $products = $this->getAllProducts();
+    $productsPurchases = $this->getSortedPurchasesById();
 
-        return redirect()->route('purchases.index'); //note 4
-    }
+    // Obtiene el importe total de la compra
+    $totalImport = $this->getTotalImport($purchase_id);
 
-    // Muestra la vista de actualización de la Compra seleccionada
-    public function edit(Purchase $purchase)
-    { //note 3
+    return view('productPurchases.create', compact(
+      'products',
+      'sortedProducts',
+      'purchase_id',
+      'supermarket',
+      'productsPurchases',
+      'totalImport'
+    ));
+  }
 
-        // Formatea la fecha a YYYY-MM-DD para que se visualice en el formulario de la vista
-        $purchase->purchase_date = Carbon::parse($purchase->purchase_date)->format('Y-m-d');
+  // **Obtener las compras de productos ordenadas por id descendente**
+  private function getSortedPurchasesById()
+  {
+    return ProductPurchase::orderBy('id', 'desc')->get();
+  }
 
-        return view('purchases.edit', compact('purchase')); //note 3
-    }
+  // **Obtener productos ordenados por descripcion**
+  private function getSortedProducts()
+  {
+    return Product::orderBy('description')->get();
+  }
 
-    // Actualiza la compra que se selecciono
-    public function update(validationPurchase $request, Purchase $purchase)
-    {
+  // **Obtener todos los productos**
+  private function getAllProducts()
+  {
+    return Product::all();
+  }
 
-        $purchase->update($request->all()); //note 2
-
-        // return $purchase;
-
-        $purchase_id = $purchase->id;
-        $purchase_date = $purchase->purchase_date;
-        $supermarket = $purchase->supermarket;
-
-        $sortedProducts = Product::orderBy('description')->get(); //note 5
-        // return $sortedProducts;
-        $products = Product::all(); //note 6
-
-        $productsPurchases = ProductPurchase::orderBy('id', 'desc')->get();
-        
-        // Devuelve el importe total actual de la compra
-        $productPurchaseController = new ProductPurchaseController();
-        $totalImport = $productPurchaseController->getTotalImport($purchase_id);
-
-        return view('productPurchases.create', compact(
-            'products',
-            'sortedProducts',
-            'purchase_id',
-            'purchase_date',
-            'supermarket',
-            'productsPurchases',
-            'totalImport'
-         )); //note 2
-    }
+  // **obtener el importe total de una compra**
+  private function getTotalImport($purchase_id)
+  {
+    $productPurchaseController = new ProductPurchaseController();
+    return $productPurchaseController->getTotalImport($purchase_id);
+  }
 }
