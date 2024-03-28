@@ -29,7 +29,7 @@ class validationProduct extends FormRequest
     {
         return [//nota 2
             'description'=>'required|regex:/^[a-zA-Zñáéíóú]+$/|min:4',
-            'measurement_unit'=>'required|regex:/^[a-zA-Zñáéíóú]+$/|max:15',
+            'measurement_unit'=>'required|string|in:Kilogramo,Gramo,Litro,Unidad',
             'category'=>'required|string|in:Alimentacion,Limpieza,Higiene personal,Hogar',
         ];
     }
@@ -42,8 +42,7 @@ class validationProduct extends FormRequest
                 'description.regex'=> 'Se admite solo letras',
             // measurement_unit
                 'measurement_unit.required'=> 'Este campo es obligatorio',
-                'measurement_unit.max'=> 'Como maximo se aceptan 15 caracteres',
-                'measurement_unit.regex'=> 'Se admite solo letras',
+                'measurement_unit.in'=> 'Debes elegir un valor',
             // category
                 'category.required'=> 'Este campo es obligatorio',
                 'category.string'=> 'Se admite solo letras',

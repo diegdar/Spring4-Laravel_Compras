@@ -16,8 +16,8 @@ class ProductFactory extends Factory
     public function definition(): array
     {
         return [
-            'description' => substr($this->faker->sentence(), 0, 40), // Limita a 40 los caracteres maximos
-            'measurement_unit'=>$this->faker->randomElement(['Kg.','g.','L.','ud.']),/*nota 1*/
+            'description' => substr($this->faker->sentence(), 0, 15), // Limita a 40 los caracteres maximos
+            'measurement_unit'=>$this->faker->randomElement(['Kilogramo','Gramo','Litro','Unidad']),/*nota 1*/
             'category'=>$this->faker->randomElement(['Alimentacion','Limpieza','Higiene personal','Hogar']),//Lo asigna de forma aleatoria entre los elementos del array dado
         ];
     }
