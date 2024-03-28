@@ -16,58 +16,64 @@ use Illuminate\Support\Facades\Redirect;
       pasa a la vista los campos del producto seleccionado.
 
 4: Después de eliminarlo, se redirigirá al usuario a la lista de registros.
-
+5: Busca en los campos de la tabla el texto introducido por el usuario en el caja de texto de busqueda en la vista.
 */
 
 class ProductController extends Controller
 {
     // Muestra la lista de productos
-    public function index(){
+    public function index()
+    {
         $products = Product::query()
-            ->orderBy('id', 'desc')
-            ->when(request('search'), function($query, $search){
-                return $query->where('description', 'like', '%'. $search . '%');
-            })
-            ->paginate(10);
-        
+            ->orderBy('id', 'desc')//ordena por 'id' de forma descendente
+            ->when(request('search'), function ($query, $search) {
+                return $query/*nota5: Buscador*/
+                    ->where('description', 'like', '%' . $search . '%')
+                    ->orWhere('measurement_unit', 'like', '%' . $search . '%')
+                    ->orWhere('category', 'like', '%' . $search . '%');
+            })->paginate(10)//Pagina los resultados mostrando 10 registros por pagina
+            ->withQueryString();//Conserva los resultados de la busqueda aunque el usuario se mueve a otra pagina
+
         return view('products.index', compact('products'));
     }
 
     // Crea un nuevo producto en la BD y muestra la lisa de productos 
-    public function store(validationProduct $request){
+    public function store(validationProduct $request)
+    {
         // return $request;
 
-        Product::create($request->all());//note 1
+        Product::create($request->all()); //note 1
 
         $products = Product::orderBy('id', 'desc')->paginate(); //note 1
-        return view('products.index', compact('products'));//note 2
+        return view('products.index', compact('products')); //note 2
     }
 
     // Borra un producto de la lista de productos
-    public function destroy(Product $product){
+    public function destroy(Product $product)
+    {
 
         // return $product;
 
         $product->delete();
 
-        return redirect()->route('products.index');//note 4
+        return redirect()->route('products.index'); //note 4
     }
 
     // Muestra la vista para editar el producto seleccionado
-    public function edit( Product $product){//note 3
-        
+    public function edit(Product $product)
+    { //note 3
+
         return view('products.edit', compact('product')); //note 3
     }
 
     // Actualiza el producto seleccionado
-    public function update(validationProduct $request, Product $product){
+    public function update(validationProduct $request, Product $product)
+    {
         // return $request;
 
         $product->update($request->all()); //note 2
 
         $products = Product::orderBy('id', 'desc')->paginate(); //note 1
         return Redirect::route('products.index')->with('products', $products);
-
     }
-
 }

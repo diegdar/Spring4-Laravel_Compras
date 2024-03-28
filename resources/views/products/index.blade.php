@@ -14,16 +14,13 @@
         </div>
     
         {{-- Tabla vista Desktop -------------------------- --}}
-        <form action="" class="text-center my-5" method="GET">
-            <div class="input-group mb-3">
-                <button class="bg-green-600 text-white px-7 py-2 rounded hover:bg-blue-300" type="submit" id="button-addon2">Buscar</button>
-                <input type="text" class="form-control h-9 w-80 p-2" placeholder="Buscar" name='search'>
-              </div>
-        </form>
-        <div class="tableDesktop my-5">
-    
-            
-    
+<form action="" class="text-center my-5" method="GET">
+    <div class="input-group mb-3">
+        <button class="bg-green-600 text-white px-7 py-2 rounded hover:bg-blue-300" type="submit" id="button-addon2">Buscar</button>
+        <input type="text" class="form-control h-9 w-80 p-2" placeholder="Buscar" name='search'>
+        </div>
+</form>
+        <div class="tableDesktop my-5">    
             <table class="flex items-center justify-center">
                 <tr>
                     {{-- Data insertion rows --}}
@@ -31,7 +28,6 @@
                         @csrf{{-- note 1 --}}
                         <td class='py-2 px-4'><input type='submit' value='Crear nuevo Producto'class='bg-blue-600 text-white px-7 py-2 rounded hover:bg-blue-300'>
                         </td>
-    
                         <td>
                             <div class='px-4 py-2 border border-blue-200 rounded flex flex-col'>
                                 <input type="text" class="h-9" name="description" style="text-align: center;" value="{{ old('description') }}" placeholder="Escribir texto producto">
