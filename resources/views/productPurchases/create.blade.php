@@ -21,7 +21,9 @@
             <article class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 my-4 gap-4">
                 <section class="mx-20 md:m-auto grid grid-cols-2 sm:grid-cols-2 ">
                     <label for="purchase_id" class="text-right text-blue-600 font-bold">Compra Nº:</label>
-                    <input type="text" class="mx-1 md:ml-2 text-center w-20" id="purchase_id" value="{{ isset($createdPurchase->id) ? $createdPurchase->id : $purchase_id }}" readonly name="purchase_id">
+                    <input type="text" class="mx-1 md:ml-2 text-center w-20" id="purchase_id"
+                        value="{{ isset($createdPurchase->id) ? $createdPurchase->id : $purchase_id }}" readonly
+                        name="purchase_id">
                 </section>
                 <section class="mx-20 md:m-auto grid grid-cols-2 sm:grid-cols-2">
                     <label for="purchase_date" class="text-right text-blue-600 font-bold">Fecha Compra:</label>
@@ -200,23 +202,29 @@
         const quantity = document.getElementById('quantity').value;
         const unitPrice = document.getElementById('unit_price').value;
 
+        // Validación de product_id
         if (product_id === '--') {
             alert('¡Debes elegir un producto!');
-            event.preventDefault(); // Prevent form submission
-            return false;
-        }
-        if (quantity.trim() === '') {
-            alert('¡Debes introducir un valor en la casilla de cantidad!');
-            event.preventDefault(); // Prevent form submission
-            return false;
-        }
-
-        if (unitPrice.trim() === '') {
-            alert('¡Debes introducir un valor en la casilla de precio unitario!');
             event.preventDefault(); // Previene enviar el formulario
             return false;
         }
 
-        return true; // Envia el formulario si no hay erro de validacion
+        // Validación de quantity (solo números enteros)
+        const quantityRegex = /^\d+$/;
+        if (!quantityRegex.test(quantity.trim())) {
+            alert('¡La cantidad debe ser un número entero!');
+            event.preventDefault(); // Previene enviar el formulario
+            return false;
+        }
+
+        // Validación de unitPrice (solo números decimales)
+        const unitPriceRegex = /^(\d+)(?:\,(\d{1,2})?)?$/;
+        if (!unitPriceRegex.test(unitPrice.trim())) {
+            alert('¡El precio unitario debe ser un número decimal con una coma como separador para los decimales!');
+            event.preventDefault(); // Previene enviar el formulario
+            return false;
+        }
+
+        return true; // Envía el formulario si no hay errores de validación
     }
 </script>
