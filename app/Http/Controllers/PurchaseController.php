@@ -9,6 +9,7 @@ use App\Models\ProductPurchase;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 
 class PurchaseController extends Controller
 {
@@ -26,11 +27,11 @@ class PurchaseController extends Controller
       ->paginate(10) //Pagina los resultados mostrando 10 registros por pagina
       ->withQueryString(); //Conserva los resultados de la busqueda aunque el usuario se mueve a otra pagina
 
-
     $productsPurchases = $this->getSortedPurchasesById();
 
     return view('purchases.index', compact('purchases', 'productsPurchases'));
   }
+
 
   // **Filtra el tipo de dato recibido para hacer la consulta del buscador**
   private function applySearchFilter($query, $search)
@@ -38,24 +39,22 @@ class PurchaseController extends Controller
     // Verificar si el dato de búsqueda es numérico
     if (is_numeric($search)) {
       $query->where('id', 'like', $search);
-
     } elseif ($this->isValidDate($search)) {
       // Convertir fecha válida a formato Y-m-d y aplicar filtro en campo purchase_date
       $searchDate = Carbon::createFromFormat('d/m/Y', $search)->format('Y-m-d');
       $query->where('purchase_date', 'like', '%' . $searchDate . '%');
-
     } else {
-      // Aplicar filtro en campo supermarket para búsqueda de tipo string
+      // Aplicar filtro en campo supermarket para que busqueda de tipo string
       $query->where('supermarket', 'like', '%' . $search . '%');
     }
   }
-    /*Verifica el formato de fecha */
-    private function isValidDate($date)
-    {
-      // Verificar si la fecha es válida con el formato d/m/Y
-      $d = \DateTime::createFromFormat('d/m/Y', $date);
-      return $d && $d->format('d/m/Y') === $date;
-    }
+  /*Verifica el formato de fecha */
+  private function isValidDate($date)
+  {
+    // Verificar si la fecha es valida con el formato d/m/Y
+    $d = \DateTime::createFromFormat('d/m/Y', $date);
+    return $d && $d->format('d/m/Y') === $date;
+  }
 
   // **Crea una nueva compra en la BD y muestra la lista de compras**
   public function store(validationPurchase $request)
@@ -66,7 +65,12 @@ class PurchaseController extends Controller
     $sortedProducts = $this->getSortedProducts();
     $products = $this->getAllProducts();
 
-    return view('productPurchases.create', compact('products', 'sortedProducts', 'createdPurchase'));
+    // return view('productPurchases.create', compact('products', 'sortedProducts', 'createdPurchase'));
+
+    return Redirect::route('productPurchases.create')->with([
+      'sortedProducts' => $this->getSortedProducts(),
+      'products' => $this->getAllProducts(),
+    ]);
   }
 
   // **Elimina una compra en la BD y muestra la lista de compras**
@@ -81,7 +85,14 @@ class PurchaseController extends Controller
   // **Muestra la vista de actualizacion de la compra seleccionada**
   public function edit(Purchase $purchase)
   {
+    $purchase->purchase_date = $this->changeDateFormat($purchase->purchase_date);
     return view('purchases.edit', compact('purchase'));
+  }
+
+  // *Metodo auxiliar: Formatea la fecha a YYYY-MM-DD para que se visualice en el formulario de la vista
+  private function changeDateFormat($textDate)
+  {
+    return Carbon::parse($textDate)->format('Y-m-d');
   }
 
   // **Actualiza la compra que se selecciono**
@@ -90,23 +101,20 @@ class PurchaseController extends Controller
     // Actualiza la compra con los datos del formulario
     $purchase->update($request->all());
 
-    $sortedProducts = $this->getSortedProducts();
-
     $purchase_id = $purchase->id;
-    $products = $this->getAllProducts();
-    $productsPurchases = $this->getSortedPurchasesById();
 
-    // Obtiene el importe total de la compra
     $totalImport = $this->getTotalImport($purchase_id);
 
-    return view('productPurchases.create', compact(
-      'products',
-      'sortedProducts',
-      'purchase_id',
-      'supermarket',
-      'productsPurchases',
-      'totalImport'
-    ));
+    return view('productPurchases.create')->with([
+      'purchase_id' => $purchase_id,
+      'purchase_date' => $purchase->purchase_date,
+      'supermarket' => $purchase->supermarket,
+      'totalImport' =>  $totalImport,
+      'products' => $this->getAllProducts(),
+      'sortedProducts' => $this->getSortedProducts(),
+      'productsPurchases' => $this->getSortedPurchasesById(),
+    ]);
+
   }
 
   // **Obtener las compras de productos ordenadas por id descendente**
@@ -131,6 +139,6 @@ class PurchaseController extends Controller
   private function getTotalImport($purchase_id)
   {
     $productPurchaseController = new ProductPurchaseController();
-    return $productPurchaseController->getTotalImport($purchase_id);
+    return $productPurchaseController->calculateTotalImport($purchase_id);
   }
 }
