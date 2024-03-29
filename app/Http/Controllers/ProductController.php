@@ -28,7 +28,8 @@ class ProductController extends Controller
             ->orderBy('id', 'desc')//ordena por 'id' de forma descendente
             ->when(request('search'), function ($query, $search) {
                 return $query/*nota5: Buscador*/
-                    ->where('description', 'like', '%' . $search . '%')
+                    ->where('id', 'like', $search)
+                    ->orWhere('description', 'like', '%' . $search . '%')
                     ->orWhere('measurement_unit', 'like', '%' . $search . '%')
                     ->orWhere('category', 'like', '%' . $search . '%');
             })->paginate(10)//Pagina los resultados mostrando 10 registros por pagina
