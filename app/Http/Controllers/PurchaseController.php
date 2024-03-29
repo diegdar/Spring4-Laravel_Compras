@@ -7,6 +7,7 @@ use App\Models\Purchase;
 use App\Models\Product;
 use App\Models\ProductPurchase;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
 class PurchaseController extends Controller
@@ -16,14 +17,14 @@ class PurchaseController extends Controller
   {
     $purchases = Purchase::orderBy('id', 'desc')->paginate();
     $purchases = Purchase::query()
-    ->orderBy('id', 'desc')//ordena por 'id' de forma descendente
-    ->when(request('search'), function ($query, $search) {/*nota5: Buscador*/
+      ->orderBy('id', 'desc') //ordena por 'id' de forma descendente
+      ->when(request('search'), function ($query, $search) {/*nota5: Buscador*/
         return $query->where(function ($query) use ($search) {
-            $this->applySearchFilter($query, $search);
+          $this->applySearchFilter($query, $search);
         });
-    })
-    ->paginate(10)//Pagina los resultados mostrando 10 registros por pagina
-    ->withQueryString();//Conserva los resultados de la busqueda aunque el usuario se mueve a otra pagina
+      })
+      ->paginate(10) //Pagina los resultados mostrando 10 registros por pagina
+      ->withQueryString(); //Conserva los resultados de la busqueda aunque el usuario se mueve a otra pagina
 
 
     $productsPurchases = $this->getSortedPurchasesById();
@@ -31,28 +32,30 @@ class PurchaseController extends Controller
     return view('purchases.index', compact('purchases', 'productsPurchases'));
   }
 
-    // **Filtra el tipo de dato recibido para hacer la consulta del buscador**
-    private function applySearchFilter($query, $search)
-    {
-        // Verificar si el dato de búsqueda es numérico
-        if (is_numeric($search)) {
-            $query->where('id', 'like', $search);
-        } elseif ($this->isValidDate($search)) {
-            // Convertir fecha válida a formato Y-m-d y aplicar filtro en campo purchase_date
-            $searchDate = Carbon::createFromFormat('d/m/Y', $search)->format('Y-m-d');
-            $query->where('purchase_date', 'like', '%' . $searchDate . '%');
-        } else {
-            // Aplicar filtro en campo supermarket para búsqueda de tipo string
-            $query->where('supermarket', 'like', '%' . $search . '%');
-        }
+  // **Filtra el tipo de dato recibido para hacer la consulta del buscador**
+  private function applySearchFilter($query, $search)
+  {
+    // Verificar si el dato de búsqueda es numérico
+    if (is_numeric($search)) {
+      $query->where('id', 'like', $search);
+
+    } elseif ($this->isValidDate($search)) {
+      // Convertir fecha válida a formato Y-m-d y aplicar filtro en campo purchase_date
+      $searchDate = Carbon::createFromFormat('d/m/Y', $search)->format('Y-m-d');
+      $query->where('purchase_date', 'like', '%' . $searchDate . '%');
+
+    } else {
+      // Aplicar filtro en campo supermarket para búsqueda de tipo string
+      $query->where('supermarket', 'like', '%' . $search . '%');
     }
-        /*Verifica el formato de fecha */
-        private function isValidDate($date)
-        {
-            // Verificar si la fecha es válida con el formato d/m/Y
-            $d = \DateTime::createFromFormat('d/m/Y', $date);
-            return $d && $d->format('d/m/Y') === $date;
-        }                
+  }
+    /*Verifica el formato de fecha */
+    private function isValidDate($date)
+    {
+      // Verificar si la fecha es válida con el formato d/m/Y
+      $d = \DateTime::createFromFormat('d/m/Y', $date);
+      return $d && $d->format('d/m/Y') === $date;
+    }
 
   // **Crea una nueva compra en la BD y muestra la lista de compras**
   public function store(validationPurchase $request)
@@ -68,8 +71,8 @@ class PurchaseController extends Controller
 
   // **Elimina una compra en la BD y muestra la lista de compras**
   public function destroy(Purchase $purchase)
-  {    
-    $purchase->delete();// Elimina la compra de la BD
+  {
+    $purchase->delete(); // Elimina la compra de la BD
 
     // Redirige a la ruta 'purchases.index'
     return redirect()->route('purchases.index');
