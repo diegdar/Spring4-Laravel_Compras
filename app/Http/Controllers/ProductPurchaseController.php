@@ -44,7 +44,7 @@ class ProductPurchaseController extends Controller
         ));
     }
 
-    public function getTotalImport($purchaseId): float
+    private function getTotalImport($purchaseId): float
     {
         $totalImport = ProductPurchase::where('purchase_id', $purchaseId)->sum('import');
         return $totalImport;
