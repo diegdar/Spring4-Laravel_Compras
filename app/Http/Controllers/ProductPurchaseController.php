@@ -27,7 +27,7 @@ class ProductPurchaseController extends Controller
         $purchase_date = $request->purchase_date;
         $supermarket = $request->supermarket;
 
-        $totalImport = $this->getTotalImport($purchase_id); //nota 1
+        $totalImport = $this->calculateTotalImport($purchase_id); //nota 1
 
         $products = Product::all();
         $sortedProducts = Product::orderBy('description')->get();
@@ -44,7 +44,7 @@ class ProductPurchaseController extends Controller
         ));
     }
 
-    private function getTotalImport($purchaseId): float
+    public function calculateTotalImport($purchaseId): float
     {
         $totalImport = ProductPurchase::where('purchase_id', $purchaseId)->sum('import');
         return $totalImport;
@@ -76,7 +76,7 @@ class ProductPurchaseController extends Controller
         $purchase_date = $purchase->purchase_date;
         $supermarket = $purchase->supermarket;
  
-        $totalImport = $this->getTotalImport($purchase_id); //nota 1
+        $totalImport = $this->calculateTotalImport($purchase_id); //nota 1
 
         return view('productPurchases.create', compact(
             'products', 

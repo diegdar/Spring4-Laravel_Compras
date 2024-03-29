@@ -26,7 +26,6 @@ class PurchaseController extends Controller
       ->paginate(10) //Pagina los resultados mostrando 10 registros por pagina
       ->withQueryString(); //Conserva los resultados de la busqueda aunque el usuario se mueve a otra pagina
 
-
     $productsPurchases = $this->getSortedPurchasesById();
 
     return view('purchases.index', compact('purchases', 'productsPurchases'));
@@ -81,8 +80,15 @@ class PurchaseController extends Controller
   // **Muestra la vista de actualizacion de la compra seleccionada**
   public function edit(Purchase $purchase)
   {
+    $purchase->purchase_date = $this->changeDateFormat($purchase->purchase_date);
     return view('purchases.edit', compact('purchase'));
   }
+
+    // *Metodo auxiliar: Formatea la fecha a YYYY-MM-DD para que se visualice en el formulario de la vista
+    private function changeDateFormat($textDate)
+    {
+      return Carbon::parse($textDate)->format('Y-m-d');      
+    }
 
   // **Actualiza la compra que se selecciono**
   public function update(validationPurchase $request, Purchase $purchase)
@@ -90,9 +96,10 @@ class PurchaseController extends Controller
     // Actualiza la compra con los datos del formulario
     $purchase->update($request->all());
 
-    $sortedProducts = $this->getSortedProducts();
-
     $purchase_id = $purchase->id;
+    $purchase_date = $purchase->purchase_date;
+    $supermarket = $purchase->supermarket;
+    $sortedProducts = $this->getSortedProducts();
     $products = $this->getAllProducts();
     $productsPurchases = $this->getSortedPurchasesById();
 
@@ -103,6 +110,7 @@ class PurchaseController extends Controller
       'products',
       'sortedProducts',
       'purchase_id',
+      'purchase_date',
       'supermarket',
       'productsPurchases',
       'totalImport'
@@ -131,6 +139,6 @@ class PurchaseController extends Controller
   private function getTotalImport($purchase_id)
   {
     $productPurchaseController = new ProductPurchaseController();
-    return $productPurchaseController->getTotalImport($purchase_id);
+    return $productPurchaseController->calculateTotalImport($purchase_id);
   }
 }
