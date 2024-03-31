@@ -24,19 +24,26 @@ class ProductController extends Controller
     // Muestra la lista de productos
     public function index()
     {
-        $products = Product::query()
-            ->orderBy('id', 'desc')//ordena por 'id' de forma descendente
-            ->when(request('search'), function ($query, $search) {
-                return $query/*nota5: Buscador*/
-                    ->where('id', 'like', $search)
+        $products = $this->getProducts(request('search'));
+        return view('products.index', compact('products'));
+    }
+    //*Funcion auxiliar: Obtiene los productos, incluso si hay filtrado por medio del cuadro de busqueda
+    private function getProducts($search = null)
+    {
+        $query = Product::query()->orderBy('id', 'desc');
+    
+        if ($search) {
+            $query->where(function ($query) use ($search) {
+                $query->where('id', 'like', $search)
                     ->orWhere('description', 'like', '%' . $search . '%')
                     ->orWhere('measurement_unit', 'like', '%' . $search . '%')
                     ->orWhere('category', 'like', '%' . $search . '%');
-            })->paginate(10)//Pagina los resultados mostrando 10 registros por pagina
-            ->withQueryString();//Conserva los resultados de la busqueda aunque el usuario se mueve a otra pagina
-
-        return view('products.index', compact('products'));
+            });
+        }
+    
+        return $query->paginate(10)->withQueryString();
     }
+    
 
     // Crea un nuevo producto en la BD y muestra la lisa de productos 
     public function store(validationProduct $request)
