@@ -67,65 +67,65 @@
             </article>
         </div>
     </form>
-    <h1 class=" text-3xl md:text-5xl text-center text-red-500 my-4">
-        Importe Total productos añadidos:
-        <span class="text-6xl">{{ number_format(isset($totalImport) ? $totalImport : 0, 2, ',', '.') }}€</span>
-    </h1>
-    {{-- Tabla vista Desktop --------- --}}
-    <div class="container mx-auto mt-5 tableDesktop">
-        {{-- Products Table --}}
-        <table class="w-full flex items-center justify-center flex-grow-0">
-            {{-- Table header rows --}}
-            <tr>
-                <th class="w-48">Ref. producto</th>
-                <th class="w-48">Descripcion</th>
-                <th class="w-48">Precio Unidad</th>
-                <th class="w-48">Cantidad</th>
-                <th class="w-48">Importe</th>
-                <th class="w-48">Unidad de medida</th>
-            </tr>
-            {{-- List products already created --}}
-            @if (isset($productsPurchases))
-                @foreach ($productsPurchases as $productPurchase)
-                    @if ($productPurchase->purchase_id == $purchase_id)
-                        <tr class="rowsDesktop">
-                            <td class="text-center">
-                                {{ $productPurchase->product_id }}
-                            </td>
-                            <td class="text-center">
-                                {{ $products[$productPurchase->product_id - 1]->description }}
-                            </td>
-                            <td class="text-center">
-                                {{ number_format($productPurchase->unit_price, 2, ',', '.') }}€ {{-- nota 4 --}}
-                            </td>
-                            <td class="text-center">
-                                {{ $productPurchase->quantity }}
-                            </td>
-                            <td class="text-center">
-                                {{ number_format($productPurchase->import, 2, ',', '.') }}€ {{-- nota 4 --}}
-                            </td>
-                            <td class="text-center">
-                                {{ $products[$productPurchase->product_id - 1]->measurement_unit }}
-                            </td>
-                            {{-- Delete button --}}
-                            <td class="py-2 px-4">
-                                <form action="{{ route('productPurchases.destroy', $productPurchase->id) }}"
-                                    method="POST">
-                                    @csrf {{-- note 1 --}}
-                                    @method('delete') {{-- note 2 --}}
-                                    <input type="hidden" name="purchase_id" value="{{ $purchase_id }}">
-                                    <input type="hidden" name="purchase_date" value="{{ $purchase_date }}">
-                                    <input type="hidden" name="supermarket" value="{{ $supermarket }}">
-                                    <button type="submit"
-                                        onclick="return confirmDelete('{{ $productPurchase->product_id }}')"
-                                        class="bg-red-500 text-white mt-4 px-8 py-2 rounded hover:bg-red-300">Borrar</button>
-                                </form>
-                            </td>
-                        </tr>
-                    @endif
-                @endforeach
+    @if (isset($productsPurchases)){{-- Solo muestra las cabeceras de la tabla si hay productos agregados a la compra --}}
+        <h1 class=" text-3xl md:text-5xl text-center text-red-500 my-4">
+            Importe Total productos añadidos:
+            <span class="text-6xl">{{ number_format(isset($totalImport) ? $totalImport : 0, 2, ',', '.') }}€</span>
+        </h1>
+        {{-- Tabla vista Desktop --------- --}}
+        <div class="container mx-auto mt-5 tableDesktop">
+            {{-- Products Table --}}
+            <table class="w-full flex items-center justify-center flex-grow-0">
+                {{-- Table header rows --}}
+                <tr>
+                    <th class="w-48">Ref. producto</th>
+                    <th class="w-48">Descripcion</th>
+                    <th class="w-48">Precio Unidad</th>
+                    <th class="w-48">Cantidad</th>
+                    <th class="w-48">Importe</th>
+                    <th class="w-48">Unidad de medida</th>
+                </tr>
+    @endif
+    {{-- List products already created --}}
+    @if (isset($productsPurchases))
+        @foreach ($productsPurchases as $productPurchase)
+            @if ($productPurchase->purchase_id == $purchase_id)
+                <tr class="rowsDesktop">
+                    <td class="text-center">
+                        {{ $productPurchase->product_id }}
+                    </td>
+                    <td class="text-center">
+                        {{ $products[$productPurchase->product_id - 1]->description }}
+                    </td>
+                    <td class="text-center">
+                        {{ number_format($productPurchase->unit_price, 2, ',', '.') }}€ {{-- nota 4 --}}
+                    </td>
+                    <td class="text-center">
+                        {{ $productPurchase->quantity }}
+                    </td>
+                    <td class="text-center">
+                        {{ number_format($productPurchase->import, 2, ',', '.') }}€ {{-- nota 4 --}}
+                    </td>
+                    <td class="text-center">
+                        {{ $products[$productPurchase->product_id - 1]->measurement_unit }}
+                    </td>
+                    {{-- Delete button --}}
+                    <td class="py-2 px-4">
+                        <form action="{{ route('productPurchases.destroy', $productPurchase->id) }}" method="POST">
+                            @csrf {{-- note 1 --}}
+                            @method('delete') {{-- note 2 --}}
+                            <input type="hidden" name="purchase_id" value="{{ $purchase_id }}">
+                            <input type="hidden" name="purchase_date" value="{{ $purchase_date }}">
+                            <input type="hidden" name="supermarket" value="{{ $supermarket }}">
+                            <button type="submit" onclick="return confirmDelete('{{ $productPurchase->product_id }}')"
+                                class="bg-red-500 text-white mt-4 px-8 py-2 rounded hover:bg-red-300">Borrar</button>
+                        </form>
+                    </td>
+                </tr>
             @endif
-        </table>
+        @endforeach
+    @endif
+    </table>
     </div>
     {{-- Tabla vista Mobil -------------------------- --}}
     <div class="container mx-auto mt-5 tableMobile">

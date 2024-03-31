@@ -62,15 +62,12 @@ class PurchaseController extends Controller
     // Crea una nueva compra en la BD con los datos del formulario
     $createdPurchase = Purchase::create($request->all());
 
-    $sortedProducts = $this->getSortedProducts();
-    $products = $this->getAllProducts();
+    return view('productPurchases.create')->with([
+      'products'=> $this->getSortedProducts(),
+     'sortedProducts'=> $this->getSortedProducts(), 
+     'createdPurchase'=>$createdPurchase
+    ]); //note 2
 
-    // return view('productPurchases.create', compact('products', 'sortedProducts', 'createdPurchase'));
-
-    return Redirect::route('productPurchases.create')->with([
-      'sortedProducts' => $this->getSortedProducts(),
-      'products' => $this->getAllProducts(),
-    ]);
   }
 
   // **Elimina una compra en la BD y muestra la lista de compras**
