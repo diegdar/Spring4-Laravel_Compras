@@ -8,15 +8,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 
 /*
-🗒️NOTES:
-1: compact('productos'): es el array que recogemos en la variable $productos
-2: Asignación masiva para insertar/actualizar registros: Crea una instancia de la clase de producto y pasará los valores recibidos en el formulario a los campos 'descripción', 'precio_unitario' y 'categoría' y también guardará estos registros en la base de datos internamente con el método save() por lo que es mejor que pasar los datos uno por uno manualmente.
+NOTAS:
+1: Pagina los resultados obtenidos, mostrando 10 registros por pagina.
+2: Seguira mostrando los resultados del filtrado si hubo una busqueda aunque el usuario se mueva a otra pagina de la paginacion.
+3: Asignación masiva para insertar/actualizar registros: Crea una instancia de la clase de producto y pasará los valores recibidos en el formulario a los campos 'descripción', 'precio_unitario' y 'categoría' y también guardará estos registros en la base de datos internamente con el método save() por lo que es mejor que pasar los datos uno por uno manualmente.
       ⚠️para que funcione debes configurar un atributo con el nombre $fillable o $guarded en la Clase del producto.
-3: recogemos el producto seleccionado para editar.
-      pasa a la vista los campos del producto seleccionado.
 
-4: Después de eliminarlo, se redirigirá al usuario a la lista de registros.
-5: Busca en los campos de la tabla el texto introducido por el usuario en el caja de texto de busqueda en la vista.
 */
 
 class ProductController extends Controller
@@ -32,7 +29,7 @@ class ProductController extends Controller
     {
         $query = Product::query()->orderBy('id', 'desc');
     
-        if ($search) {
+        if ($search) {//filtra los resultados si el usuario ha introducido algun texto en el cuadro de busqueda
             $query->where(function ($query) use ($search) {
                 $query->where('id', 'like', $search)
                     ->orWhere('description', 'like', '%' . $search . '%')
@@ -41,7 +38,7 @@ class ProductController extends Controller
             });
         }
     
-        return $query->paginate(10)->withQueryString();
+        return $query->paginate(10)/*nota 1*/->withQueryString()/*nota 2*/;
     }
     
 
@@ -50,10 +47,10 @@ class ProductController extends Controller
     {
         // return $request;
 
-        Product::create($request->all()); //note 1
+        Product::create($request->all()); //nota 3
 
-        $products = Product::orderBy('id', 'desc')->paginate(); //note 1
-        return view('products.index', compact('products')); //note 2
+        $products = Product::orderBy('id', 'desc')->paginate(); 
+        return view('products.index', compact('products'));
     }
 
     // Borra un producto de la lista de productos
@@ -64,14 +61,14 @@ class ProductController extends Controller
 
         $product->delete();
 
-        return redirect()->route('products.index'); //note 4
+        return redirect()->route('products.index'); 
     }
 
     // Muestra la vista para editar el producto seleccionado
     public function edit(Product $product)
-    { //note 3
+    { 
 
-        return view('products.edit', compact('product')); //note 3
+        return view('products.edit', compact('product')); 
     }
 
     // Actualiza el producto seleccionado
@@ -79,9 +76,9 @@ class ProductController extends Controller
     {
         // return $request;
 
-        $product->update($request->all()); //note 2
+        $product->update($request->all()); //nota 3
 
-        $products = Product::orderBy('id', 'desc')->paginate(); //note 1
+        $products = Product::orderBy('id', 'desc')->paginate(10)/*nota 1*/; 
         return Redirect::route('products.index')->with('products', $products);
     }
 }
