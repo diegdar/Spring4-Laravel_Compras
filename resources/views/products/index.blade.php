@@ -14,15 +14,14 @@
                             </div>
 
                             {{-- Tabla vista Desktop -------------------------- --}}
-                            <form action="" class="text-left ml-20 my-5 md:ml-60 md:my-5" method="GET">
+                            <form action="" class="text-center ml-auto mr-auto my-5 md:ml-40 md:my-5" method="GET">
                                 <div class="input-group mb-3">
                                     <button class="bg-green-600 text-white px-7 py-2 rounded hover:bg-blue-300" type="submit"
                                         id="button-addon2">Buscar</button>
-                                    <input type="text" class="form-control h-9 w-80 p-2"
-                                        placeholder="Escribir texto a buscar" name='search'>
+                                    <input type="text" class="form-control h-9 p-2 w-3/4" placeholder="Escribir texto a buscar" name='search'>
                                 </div>
                             </form>
-                            <div class="tableDesktop my-5">
+                                                    <div class="tableDesktop my-5">
                                 <table class="flex items-center justify-center">
                                     <tr>
                                         {{-- Data insertion rows --}}
