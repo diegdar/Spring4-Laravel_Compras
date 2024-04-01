@@ -67,7 +67,7 @@
             </article>
         </div>
     </form>
-    @if (isset($productsPurchases)){{-- Solo muestra las cabeceras de la tabla si hay productos agregados a la compra --}}
+    @if ($totalImport>0){{-- Solo muestra las cabeceras de la tabla si hay productos agregados a la compra (el importe de la compra es superior a 0)--}}
         <h1 class=" text-3xl md:text-5xl text-center text-red-500 my-4">
             Importe Total productos añadidos:
             <span class="text-6xl">{{ number_format(isset($totalImport) ? $totalImport : 0, 2, ',', '.') }}€</span>
@@ -197,34 +197,55 @@
         return confirm("¿Estás seguro de que deseas borrar el produtco con referencia Nº: " + product_id + "?");
     }
 
-    function validateProduct(event) {
-        const product_id = document.getElementById('product_id').value;
-        const quantity = document.getElementById('quantity').value;
-        const unitPrice = document.getElementById('unit_price').value;
+// Función para validar el precio unitario
+function validateUnitPrice(unitPrice) {
+  // Expresión regular para un número decimal positivo
+  const unitPriceRegex = /^(\d+)(?:\,(\d{1,2})?)?$/;
 
-        // Validación de product_id
-        if (product_id === '--') {
-            alert('¡Debes elegir un producto!');
-            event.preventDefault(); // Previene enviar el formulario
-            return false;
-        }
+  // Validar si el precio unitario es un número decimal
+  if (!unitPriceRegex.test(unitPrice.trim())) {
+    return false;
+  }
 
-        // Validación de quantity (solo números enteros)
-        const quantityRegex = /^\d+$/;
-        if (!quantityRegex.test(quantity.trim())) {
-            alert('¡La cantidad debe ser un número entero!');
-            event.preventDefault(); // Previene enviar el formulario
-            return false;
-        }
+  // Convertir el precio unitario a un número
+  const parsedUnitPrice = parseFloat(unitPrice.replace(/,/g, '.'));
 
-        // Validación de unitPrice (solo números decimales)
-        const unitPriceRegex = /^(\d+)(?:\,(\d{1,2})?)?$/;
-        if (!unitPriceRegex.test(unitPrice.trim())) {
-            alert('¡El precio unitario debe ser un número decimal con una coma como separador para los decimales!');
-            event.preventDefault(); // Previene enviar el formulario
-            return false;
-        }
+  // Validar si el precio unitario es mayor a 0
+  if (parsedUnitPrice <= 0) {
+    return false;
+  }
 
-        return true; // Envía el formulario si no hay errores de validación
-    }
+  return true;
+}
+
+// Función para validar el producto
+function validateProduct(event) {
+  const product_id = document.getElementById('product_id').value;
+  const quantity = document.getElementById('quantity').value;
+  const unitPrice = document.getElementById('unit_price').value;
+
+  // Validación de product_id
+  if (product_id === '--') {
+    alert('¡Debes elegir un producto!');
+    event.preventDefault(); // Previene enviar el formulario
+    return false;
+  }
+
+  // Validación de quantity (solo números enteros)
+  const quantityRegex = /^\d+$/;
+  if (!quantityRegex.test(quantity.trim())) {
+    alert('¡La cantidad debe ser un número entero!');
+    event.preventDefault(); // Previene enviar el formulario
+    return false;
+  }
+
+  // Validación de unitPrice (solo números decimales)
+  if (!validateUnitPrice(unitPrice.trim())) {
+    alert('¡El precio unitario debe ser un número decimal positivo, y las posicion decimales se deben separar por una coma!');
+    event.preventDefault(); // Previene enviar el formulario
+    return false;
+  }
+
+  return true; // Envía el formulario si no hay errores de validación
+}
 </script>
