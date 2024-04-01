@@ -106,7 +106,7 @@ class PurchaseController extends Controller
 
     $purchase_id = $purchase->id;
 
-    $totalImport = $this->getTotalImport($purchase_id);
+    $totalImport = $this->calculateTotalImport($purchase_id);
 
     return view('productPurchases.create')->with([
       'purchase_id' => $purchase_id,
@@ -119,10 +119,4 @@ class PurchaseController extends Controller
     ]);
   }
 
-  // **obtener el importe total de una compra**
-  private function getTotalImport($purchase_id)
-  {
-    $productPurchaseController = new ProductPurchaseController();
-    return $productPurchaseController->calculateTotalImport($purchase_id);
-  }
 }

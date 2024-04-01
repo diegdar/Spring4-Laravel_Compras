@@ -41,11 +41,6 @@ class ProductPurchaseController extends Controller
         ]);
     }
   
-    public function calculateTotalImport($purchaseId): float
-    {
-        $totalImport = ProductPurchase::where('purchase_id', $purchaseId)->sum('import');
-        return $totalImport;
-    }
 
     // Funcion auxiliar para comprobar que no haya sido añadido el mismo producto a la compra y sin o es asi lo añade
     private function CheckDuplicatedProducts($request, float $unitPrice)
