@@ -1,4 +1,4 @@
-**Nivel 1:
+**Level 1:
 Design the complete model of your project database (MER). It is important to be clear about which entities we will store information about, as well as their attributes and relationships. You can use the tool of your choice. (MySQL Workbench, Diagrams.net, Creately...).
 Create a new project with Laravel 10. Fix any errors that may appear.
 Define the routes that our web project will have. The domain must have the complete CRUD of your project.
