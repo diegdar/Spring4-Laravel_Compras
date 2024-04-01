@@ -16,9 +16,9 @@ return new class extends Migration
             $table->string('description', 40);
             $table->string('measurement_unit', 15);
             $table->enum('category', ['Alimentacion','Limpieza','Higiene personal','Hogar']);
-            $table->softDeletes();
-            
-            $table->timestamps();
+            $table->softDeletes();//crea la columna 'deleted_at' para conservar los valores de los productos agregados en compras anteriores al borrado del producto
+
+            $table->timestamps();//crea las columnas created_at y updated_at para llevar un control de los registros
 
         });
     }
