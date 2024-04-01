@@ -9,6 +9,7 @@ use App\Models\ProductPurchase;
 use App\Models\Purchase;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
+use App\Traits\ControllerMethods;
 
 /*
 🗒️NOTAS:
@@ -17,6 +18,8 @@ use Illuminate\Support\Facades\Redirect;
 
 class ProductPurchaseController extends Controller
 {
+    use ControllerMethods;
+
     public function store(Request $request)
     {
         // var_dump($request);
@@ -77,23 +80,4 @@ class ProductPurchaseController extends Controller
         ]);
     }
 
-    // **Obtener las compras de productos ordenadas por id descendente**
-    private function getSortedPurchasesById()
-    {
-        return ProductPurchase::orderBy('id', 'desc')->get();
-    }
-
-    // **Obtener productos ordenados por descripcion**
-    private function getSortedProducts()
-    {
-      return Product::whereNull('deleted_at')//Devuelve los productos que NO han sido eliminados en la tabla 'products'
-        ->orderBy('description')
-        ->get();
-    }
-        
-    // **Obtener todos los productos**
-    private function getAllProducts()
-    {
-        return Product::withTrashed()->get();//Devuelve TODOS los productos esten elimados o no en la tabla 'products'
-    }
 }
