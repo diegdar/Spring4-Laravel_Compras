@@ -67,7 +67,7 @@
             </article>
         </div>
     </form>
-    @if ($totalImport>0){{-- Solo muestra las cabeceras de la tabla si hay productos agregados a la compra (el importe de la compra es superior a 0)--}}
+    @if (isset($totalImport) and $totalImport>0 ){{-- Solo muestra las cabeceras de la tabla si hay productos agregados a la compra (el importe de la compra es superior a 0)--}}
         <h1 class=" text-3xl md:text-5xl text-center text-red-500 my-4">
             Importe Total productos añadidos:
             <span class="text-6xl">{{ number_format(isset($totalImport) ? $totalImport : 0, 2, ',', '.') }}€</span>
