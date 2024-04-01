@@ -18,10 +18,11 @@
                                 <div class="input-group mb-3">
                                     <button class="bg-green-600 text-white px-7 py-2 rounded hover:bg-blue-300" type="submit"
                                         id="button-addon2">Buscar</button>
-                                    <input type="text" class="form-control h-9 p-2 w-3/4" placeholder="Escribir texto a buscar" name='search'>
+                                    <input type="text" class="form-control h-9 p-2 w-3/4"
+                                        placeholder="Escribir texto a buscar" name='search'>
                                 </div>
                             </form>
-                                                    <div class="tableDesktop my-5">
+                            <div class="tableDesktop my-5">
                                 <table class="flex items-center justify-center">
                                     <tr>
                                         {{-- Data insertion rows --}}
@@ -97,7 +98,20 @@
                                             </td>
                                         </form>
                                     </tr>
+                                    {{-- Muestra mensaje cuando no hay resultado de busqueda --}}
+                                    @if (!$products->count() > 0)
+                                        <tr>
+                                            <td class="text-4xl text-center text-red-500" colspan="4">No se encontraron
+                                                productos para tus criterios de búsqueda!</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                    @endif
                                     <tr>
+
                                         {{-- Solo muestra las cabeceras de la tabla si hay productos creados --}}
                                         @if ($products->isNotEmpty())
                                             <td class="text-6xl text-center text-red-500" colspan="4">Lista de Productos

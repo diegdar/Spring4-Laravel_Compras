@@ -28,8 +28,8 @@ class ProductController extends Controller
     private function getProducts($search = null)
     {
         $query = Product::query()->orderBy('id', 'desc');
-    
-        if ($search) {//filtra los resultados si el usuario ha introducido algun texto en el cuadro de busqueda
+
+        if ($search) { //filtra los resultados si el usuario ha introducido algun texto en el cuadro de busqueda
             $query->where(function ($query) use ($search) {
                 $query->where('id', 'like', $search)
                     ->orWhere('description', 'like', '%' . $search . '%')
@@ -37,10 +37,15 @@ class ProductController extends Controller
                     ->orWhere('category', 'like', '%' . $search . '%');
             });
         }
-    
+
+        // Si no hay resultados después de aplicar los filtros, mostrar un mensaje
+        if (!$query->exists()) {
+            $query->whereRaw('1 = 0'); // Evita la ejecución real de la búsqueda pero mantiene la cadena de consulta
+        }
+
         return $query->paginate(10)/*nota 1*/->withQueryString()/*nota 2*/;
     }
-    
+
 
     // Crea un nuevo producto en la BD y muestra la lisa de productos 
     public function store(validationProduct $request)
@@ -49,7 +54,7 @@ class ProductController extends Controller
 
         Product::create($request->all()); //nota 3
 
-        $products = Product::orderBy('id', 'desc')->paginate(); 
+        $products = Product::orderBy('id', 'desc')->paginate();
         return view('products.index', compact('products'));
     }
 
@@ -61,14 +66,14 @@ class ProductController extends Controller
 
         $product->delete();
 
-        return redirect()->route('products.index'); 
+        return redirect()->route('products.index');
     }
 
     // Muestra la vista para editar el producto seleccionado
     public function edit(Product $product)
-    { 
+    {
 
-        return view('products.edit', compact('product')); 
+        return view('products.edit', compact('product'));
     }
 
     // Actualiza el producto seleccionado
@@ -78,7 +83,7 @@ class ProductController extends Controller
 
         $product->update($request->all()); //nota 3
 
-        $products = Product::orderBy('id', 'desc')->paginate(10)/*nota 1*/; 
+        $products = Product::orderBy('id', 'desc')->paginate(10)/*nota 1*/;
         return Redirect::route('products.index')->with('products', $products);
     }
 }

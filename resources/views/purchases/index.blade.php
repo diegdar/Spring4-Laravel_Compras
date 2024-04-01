@@ -49,7 +49,7 @@
                     </td>
                     <td>
                         <div class='px-4 py-2 border border-blue-200 rounded flex flex-col'>
-                            <input type="text" class="h-9" name="supermarket" style="text-align: center;">
+                            <input type="text" class="h-9" name="supermarket" style="text-align: center;" placeholder="Ingresar supermercado">
                             @error('supermarket')
                                 {{-- note 2 --}}
                                 <span class="textValidation">*{{ $message }}</span>
@@ -59,6 +59,18 @@
                 </form>
             </tr>
             </form>
+            {{-- Muestra mensaje cuando no hay resultado de busqueda --}}
+            @if (!$purchases->count() > 0)
+            <tr>
+                <td class="text-4xl text-center text-red-500" colspan="4">No se encontraron compras para tus criterios de búsqueda!</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            @endif
+
             @if ($purchases->isNotEmpty())
                 {{-- Solo muestra las cabeceras de la tabla si hay compras creadas --}}
                 <tr>
@@ -153,6 +165,18 @@
             </form>
             </tr>
             </form>
+            {{-- Muestra mensaje cuando no hay resultado de busqueda --}}
+            @if (!$purchases->count() > 0)
+            <tr>
+                <td class="text-4xl text-center text-red-500" colspan="4">No se encontraron compras para tus criterios de búsqueda!</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            @endif
+
             {{-- Lista compras ya creadas --}}
             @if ($purchases->isNotEmpty()) {{-- Solo muestra las cabeceras de la tabla si hay compras creadas --}}
                 <h1 class="text-6xl text-center text-red-500 my-4 " colspan="6">Compras hechas:</h1>

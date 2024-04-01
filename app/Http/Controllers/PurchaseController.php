@@ -47,6 +47,11 @@ class PurchaseController extends Controller
       // Aplicar filtro en campo supermarket para que busqueda de tipo string
       $query->where('supermarket', 'like', '%' . $search . '%');
     }
+
+    // Comprobar si hay resultados después de aplicar los filtros
+    if (!$query->exists()) {
+      $query->whereRaw('1 = 0'); // Esto evita la ejecución real de la búsqueda pero mantiene la cadena de consulta
+    }
   }
   /*Verifica el formato de fecha */
   private function isValidDate($date)
@@ -63,9 +68,9 @@ class PurchaseController extends Controller
     $createdPurchase = Purchase::create($request->all());
 
     return view('productPurchases.create')->with([
-      'products'=> $this->getSortedProducts(),
-     'sortedProducts'=> $this->getSortedProducts(), 
-     'createdPurchase'=>$createdPurchase
+      'products' => $this->getSortedProducts(),
+      'sortedProducts' => $this->getSortedProducts(),
+      'createdPurchase' => $createdPurchase
     ]); //note 2
 
   }
@@ -111,7 +116,6 @@ class PurchaseController extends Controller
       'sortedProducts' => $this->getSortedProducts(),
       'productsPurchases' => $this->getSortedPurchasesById(),
     ]);
-
   }
 
   // **Obtener las compras de productos ordenadas por id descendente**
@@ -123,7 +127,7 @@ class PurchaseController extends Controller
   // **Obtener productos ordenados por descripcion**
   private function getSortedProducts()
   {
-    return Product::whereNull('deleted_at')//Devuelve los productos que NO han sido eliminados en la tabla 'products'
+    return Product::whereNull('deleted_at') //Devuelve los productos que NO han sido eliminados en la tabla 'products'
       ->orderBy('description')
       ->get();
   }
@@ -131,7 +135,7 @@ class PurchaseController extends Controller
   // **Obtener todos los productos**
   private function getAllProducts()
   {
-      return Product::withTrashed()->get();//Devuelve TODOS los productos esten elimados o no en la tabla 'products'
+    return Product::withTrashed()->get(); //Devuelve TODOS los productos esten elimados o no en la tabla 'products'
   }
 
   // **obtener el importe total de una compra**
