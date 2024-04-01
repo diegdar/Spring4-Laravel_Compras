@@ -27,9 +27,10 @@ return new class extends Migration
             ->onUpdate('cascade');/*nota 2*/
         
             $table->foreignId('purchase_id')
-                ->constrained('purchases');
-                // ->cascadeOnUpdate();
-            
+                ->constrained('purchases')
+                ->onDelete('cascade')/*nota 1*/
+                ->onUpdate('cascade');/*nota 2*/
+                
             $table->timestamps();
 
             // Al indexar el rendimiento es más rápido al realizar consultas

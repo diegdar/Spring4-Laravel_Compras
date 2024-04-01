@@ -16,6 +16,8 @@ return new class extends Migration
             $table->string('description', 40);
             $table->string('measurement_unit', 15);
             $table->enum('category', ['Alimentacion','Limpieza','Higiene personal','Hogar']);
+            $table->softDeletes();
+            
             $table->timestamps();
 
         });
