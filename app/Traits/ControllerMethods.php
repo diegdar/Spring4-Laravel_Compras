@@ -26,4 +26,12 @@ trait ControllerMethods
   {
     return Product::withTrashed()->get(); //Devuelve TODOS los productos esten elimados o no en la tabla 'products'
   }
+
+  // **obtener el importe total de una compra**
+  public function calculateTotalImport($purchaseId): float
+  {
+      $totalImport = ProductPurchase::where('purchase_id', $purchaseId)->sum('import');
+      return $totalImport;
+  }
+
 }
