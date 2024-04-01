@@ -25,6 +25,7 @@ nav {
     }
     .tableMobile tr {
         /*afecta a todas la filas menos a la ultima  */
+        background-color: white;
         border-top: 1px dashed black;
     }
     .tableMobile tr > :nth-child(2) {
@@ -58,14 +59,16 @@ nav {
     }
     .rowsDesktop {
         border-bottom: 1px dashed black;
+        background-color: white;
     }
     .DesktopHead {
         /* hace fijo la cabecera */
-        /* position: sticky;
-        top: 180;  */
+        position: sticky;
+        top: 80; 
       background-color: #7a8da5; /* Color de fondo para resaltar la fila fija */
       color: white;
       font-size: 1.2rem;
+      padding: 10px 5px
     }
       .DesktopHead th{
         padding: 8px; 

@@ -4,8 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /*
 🗒️NOTES:
@@ -18,10 +18,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class Product extends Model
 {
     use HasFactory;
+    use SoftDeletes;
 
         // public $timestamps = false;
 
     protected $guarded = [];//note 1
+    protected $dates = ['deleted_at'];
+
 
     public function purchases():BelongsToMany //note 2
     {

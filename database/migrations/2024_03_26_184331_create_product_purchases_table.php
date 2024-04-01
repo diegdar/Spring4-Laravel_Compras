@@ -3,7 +3,11 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-
+/*
+🗒️NOTAS:
+1: si se elimina un producto en la tabla 'products' desaparecera tambien los registros de este en la tabla 'product_purchases'.
+2: Si se actualiza un 'products' en la tabla products se vera la actualizacion en la tabla 'product_purchases'
+*/
 return new class extends Migration
 {
     /**
@@ -18,13 +22,15 @@ return new class extends Migration
             $table->decimal('import');
 
             $table->foreignId('product_id')
-                ->constrained('products');
-                // ->cascadeOnUpdate();
-
+            ->constrained('products')
+            ->onDelete('cascade')/*nota 1*/
+            ->onUpdate('cascade');/*nota 2*/
+        
             $table->foreignId('purchase_id')
-                ->constrained('purchases');
-                // ->cascadeOnUpdate();
-            
+                ->constrained('purchases')
+                ->onDelete('cascade')/*nota 1*/
+                ->onUpdate('cascade');/*nota 2*/
+                
             $table->timestamps();
 
             // Al indexar el rendimiento es más rápido al realizar consultas

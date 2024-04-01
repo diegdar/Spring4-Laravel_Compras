@@ -2,6 +2,9 @@
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProductPurchaseController;
+use App\Http\Controllers\PurchaseController;
+use App\Models\ProductPurchase;
 use Illuminate\Support\Facades\Route;
 
 /*
