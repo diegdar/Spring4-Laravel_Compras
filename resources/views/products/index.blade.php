@@ -3,7 +3,7 @@
 1: crea un token oculto para que los usuarios no generen codigo malicioso antes de enviar el formulario.
 2: mostrara un mensaje personalizado cuando no se cumpla la validacion del campo    
     --}}
-                        @extends('layouts.plantilla')
+                        @extends('layouts.navigationBar')
 
                         @section('title', 'Productos')
 

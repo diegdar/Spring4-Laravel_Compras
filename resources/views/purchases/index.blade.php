@@ -5,7 +5,7 @@
 3: We have to subtract 1 unit to match the array position with the product_id
 4: Devuelve el importe total de la compra sumando todos los importes de los productos que la componen      
     --}}
-@extends('layouts.plantilla')
+@extends('layouts.navigationBar')
 
 @section('title', 'Lista Compras')
 

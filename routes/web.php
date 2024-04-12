@@ -18,24 +18,26 @@ use App\Models\ProductPurchase;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', HomeController::class)->name('home');
+
+
+
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
+    Route::resource('products', ProductController::class);
+    Route::resource('purchases', PurchaseController::class);
+    Route::resource('productPurchases', ProductPurchaseController::class);
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
-
-// Route::get('/', HomeController::class)->name('home');
-
-Route::resource('products', ProductController::class);
-Route::resource('purchases', PurchaseController::class);
-Route::resource('productPurchases', ProductPurchaseController::class);
+require __DIR__ . '/auth.php';

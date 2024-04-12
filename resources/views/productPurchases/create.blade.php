@@ -4,7 +4,7 @@
 2: mostrara un mensaje personalizado cuando no se cumpla la validacion del campo.
 3: We have to subtract 1 unit to match the array position with the product_id      
     --}}
-@extends('layouts.plantilla')
+@extends('layouts.navigationBar')
 
 @section('title', 'Productos de la compra')
 

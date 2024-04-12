@@ -7,7 +7,7 @@
     
     --}}
 
-    @extends('layouts.plantilla')
+    @extends('layouts.navigationBar')
 
     @section('title', 'Editar Producto')
     
