@@ -1,7 +1,7 @@
 <nav x-data="{ open: false }" class="bg-gray-900 border-b border-white-300">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between h-16">
+        <div class="flex justify-end sm:justify-end lg:justify-center h-16">
             <div class="flex">
                 <!-- Logo -->
                 {{-- <div class="shrink-0 flex items-center ">
@@ -33,7 +33,7 @@
             </div>
 
             <!-- Settings Dropdown -->
-            <div class="hidden sm:flex sm:items-center sm:ms-6">
+            <div class="hidden sm:flex sm:items-center lg:justify-self-stretch sm:ms-6">
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
                         <button
@@ -69,7 +69,7 @@
                     </x-slot>
                 </x-dropdown>
             </div>
-{{-- TODO: Alinear el icono hacia la izquierda y hacerlo mas grande --}}
+            {{-- TODO: Alinear el icono hacia la izquierda y hacerlo mas grande --}}
             <!-- Hamburger -->
             <div class="-me-2 flex items-center sm:hidden">
                 <button @click="open = ! open"

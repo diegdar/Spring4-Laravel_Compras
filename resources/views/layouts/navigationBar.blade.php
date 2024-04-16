@@ -10,9 +10,9 @@
 </head>
 
 <body class="bg-blue-200">
-    <nav class="flex justify-between flex-wrap bg-gray-900 p-2">
+    <nav class="flex justify-end flex-wrap bg-gray-900 p-2">
         @auth
-            <section class="block lg:hidden">
+            <section class="flex justify-end lg:hidden">
                 <button id="burguerMenu" class=" text-xl flex px-3 py-2 text-white  hover:border-white">
                     <svg class="fill-current h-6 w-6" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                         <title>Menu</title>
@@ -78,7 +78,6 @@
                 <a href="{{ route('login') }}"
                     class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Log
                     in</a>
-
                 @if (Route::has('register'))
                     <a href="{{ route('register') }}"
                         class="ml-4 font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Register</a>
