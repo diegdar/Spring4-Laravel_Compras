@@ -73,6 +73,10 @@ nav {
       .DesktopHead th{
         padding: 8px; 
       }
+    .log_in{
+        display: flex;
+        justify-items:flex-end;
+    }
 }
 
 /* Centrar los enlaces */
